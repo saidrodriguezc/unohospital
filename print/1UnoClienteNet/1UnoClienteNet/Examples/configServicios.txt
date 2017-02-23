@@ -1,0 +1,4 @@
+A = Impresion
+I = Sincronizacion
+A = Correos Electronicos
+I = Programador

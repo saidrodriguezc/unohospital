@@ -1,0 +1,9 @@
+C:\AppServ\www\uno\sistema\print\fichero.txt
+\\Servidor\HP Deskjet 1000 J110 series
+
+localhost
+unodb_brisas
+localhost2
+unodb_brisas2
+C:\Appserv\mysql\bin\mysqldump.exe -uroot -p123 --routines=TRUE 
+C:\Appserv\www\uno\sistema\db\copias\

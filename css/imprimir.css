@@ -1,0 +1,67 @@
+BODY { 
+   font: 7pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+   margin: 10 0 10 0px; 
+   text-align: center; 
+   background-color: #ffffff;
+} 
+#contenedor{ 
+    text-align: left; 
+    width: 450px; 
+    margin: auto; 
+} 
+#cabecera{ 
+   visibility:hidden; 
+   display: none; 
+} 
+
+#cuerpo{ 
+    margin: 0 0 0 0px; 
+} 
+#lateral{ 
+   visibility:hidden; 
+   display: none; 
+} 
+
+#pie{ 
+    background-color: #cccccc; 
+    padding: 3 10 3 10px; 
+    text-align:right; 
+    clear: both; 
+} 
+
+#principal{ 
+    background-color: #ffffff; 
+    padding: 0 0 0 2px; 
+    width: 450px; 
+    float: left; 
+} 
+
+#principal table{ 
+   background-color: #ffffff; 
+   width: 450px; 
+   border: 0px solid #cccccc; 
+   font-size:8pt; 
+} 
+
+div.anulado .text {  
+    position:inherit;
+    cursor: default;  
+	align:center;
+	float:none;
+}
+
+.TablaDocsImPar{
+ height:22px;
+ vertical-align:middle;
+ background-color:#FFFFFF;
+ font-family:Verdana;
+ font-size:11px;
+}
+
+.TablaDocsPar{
+ height:22px;
+ vertical-align:middle;
+ background-color:#EEF1F6;
+ font-family:Verdana;
+ font-size:11px;
+}

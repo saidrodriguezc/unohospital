@@ -1,0 +1,10 @@
+\\192.168.2.101\print2\
+\\192.168.2.110\BIXOLONS
+
+
+localhost
+unohospital
+localhost2
+unohospital
+C:\Appserv\mysql\bin\mysqldump.exe -uroot -p123 --routines=TRUE 
+C:\Appserv\Dropbox\www\unohospital\db\copias\

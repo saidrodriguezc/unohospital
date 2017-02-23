@@ -1,0 +1,31 @@
+***************************
+
+Backup 
+
+
+***************************
+
+Ir a C:\Appserv\Mysql\bin
+
+Ejecutar : 
+
+mysqldump -uroot -p123 --routines=TRUE unohospital>unohospital_Ago21.sql
+
+
+
+***************************
+
+Restore 
+
+
+***************************
+
+mysql -u root -p unodb_tyt
+
+Clave : 123
+
+create database xxxx
+
+use xxxx
+
+\. archivo.sql
