@@ -20,7 +20,7 @@
      $x=25;
 	 
 	 /// Imprimo los Formatos del Papel
-	 $pdf->Image('images/logoempresa.jpg',8,6,75,17,0);
+	 $pdf->Image('images/logoempresa2.jpg',8,6,75,17,0);
 	      
 	 $pdf->SetFont('Arial','B',20);
 	 $cont= 'HISTORIA CLINICA';                          $pdf->Text(113,16,$cont);	

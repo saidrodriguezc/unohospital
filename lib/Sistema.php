@@ -19,7 +19,7 @@
     function Conectar()
 	{
 	  $this->UsuarioBD  = "root";
-	  $this->ClaveBD    = "123456789";
+	  $this->ClaveBD    = "123";
 	  $this->ServidorBD = "localhost";
   	  $this->NombreBD   = "unohospitaldb";
 	  
