@@ -397,7 +397,7 @@
 	{
  	    $_SESSION["NUMREGISTROSXCONSULTA"] = 500;
     	$vsql = "SELECT * FROM documentos D INNER JOIN terceros T ON (D.terid1 = T.terid) 
-		         WHERE tipodoc = 'FVE' ORDER BY tipodoc ASC , prefijo ASC , numero ASC limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
+		         WHERE tipodoc = 'FVE' ORDER BY tipodoc ASC , prefijo ASC , numero DESC limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
 	}	
 	
 	$conex  = $clase->Conectar();
@@ -407,7 +407,7 @@
 	{
     	$clase->Aviso(2,"No se encontraron Documentos con este criterio de Busqueda");  			  			   		
     	$vsql = "SELECT * FROM documentos D INNER JOIN terceros T ON (D.terid1 = T.terid) 
-		         WHERE tipodoc = 'FVE' ORDER BY tipodoc ASC , prefijo ASC , numero ASC limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];      
+		         WHERE tipodoc = 'FVE' ORDER BY tipodoc ASC , prefijo ASC , numero DESC limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];      
         $result = mysql_query($vsql,$conex);
 	}
 	

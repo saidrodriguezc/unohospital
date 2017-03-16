@@ -1557,10 +1557,15 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
   if($opcion == "encontrar")
   {
     $criterio = $_POST['criterio'];
-    $vsql = "SELECT H.* , T1.nombre NombrePaciente , T2.nombre NombreMedico 
-	         FROM historiacli H INNER JOIN terceros T1 ON (H.teridpaciente = T1.terid) LEFT JOIN terceros T2 ON (H.teridprof = T2.terid) 
-	         WHERE T1.nit like '%".$criterio."%' OR T1.nombre like '%".$criterio."%' OR T2.nit like '%".$criterio."%' OR T2.nombre like '%".$criterio."%' 
-			 OR H.conceptomed like '%".$criterio."%' ORDER BY H.momento DESC Limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
+    $vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico , TX.nombre Empresa 
+    	     FROM historiacli HC 
+	         INNER JOIN terceros T1 ON (HC.teridpaciente = T1.terid) 
+	         LEFT JOIN terceros T2 ON (HC.teridprof = T2.terid)
+             LEFT JOIN documentos DX ON (DX.docuid = HC.docuid)
+             LEFT JOIN contratos CX ON (DX.contratoid = CX.contratoid)
+             LEFT JOIN terceros TX ON (CX.terid = TX.terid)
+             WHERE HC.tipoexamen like '%".$criterio."%' OR TX.nombre like '%".$criterio."%' OR T1.nit like '%".$criterio."%' OR T1.nombre like '%".$criterio."%' OR T2.nit like '%".$criterio."%' OR T2.nombre like '%".$criterio."%' 
+		     OR HC.conceptomed like '%".$criterio."%' ORDER BY HC.momento DESC Limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
 
     $_SESSION['SQL_HISTORIAS'] = $vsql;
 	header("Location: historiacli.php");
@@ -1605,10 +1610,14 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
   if($opcion == "soloabiertas")
   {
     $criterio = $_POST['criterio'];
-     	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico FROM historiacli HC 
+     	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico , TX.nombre Empresa 
+    	         FROM historiacli HC 
 		         INNER JOIN terceros T1 ON (HC.teridpaciente = T1.terid) 
-		         INNER JOIN terceros T2 ON (HC.teridprof = T2.terid) 
-	             WHERE HC.estado='A' ORDER BY HC.momento DESC Limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
+		         LEFT JOIN terceros T2 ON (HC.teridprof = T2.terid)
+                 LEFT JOIN documentos DX ON (DX.docuid = HC.docuid)
+                 LEFT JOIN contratos CX ON (DX.contratoid = CX.contratoid)
+                 LEFT JOIN terceros TX ON (CX.terid = TX.terid)
+                 WHERE HC.estado='A' ORDER BY HC.momento DESC Limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
 
 	$_SESSION['SQL_HISTORIAS'] = $vsql;
 	header("Location: historiacli.php");
@@ -1619,9 +1628,13 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
   {
     $fechahoy = date("Y-m-d");
     $criterio = $_POST['criterio'];
-   	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico FROM historiacli HC 
-	         INNER JOIN terceros T1 ON (HC.teridpaciente = T1.terid) 
-	         INNER JOIN terceros T2 ON (HC.teridprof = T2.terid) 
+   	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico , TX.nombre Empresa 
+    	     FROM historiacli HC 
+		     INNER JOIN terceros T1 ON (HC.teridpaciente = T1.terid) 
+		     LEFT JOIN terceros T2 ON (HC.teridprof = T2.terid)
+             LEFT JOIN documentos DX ON (DX.docuid = HC.docuid)
+             LEFT JOIN contratos CX ON (DX.contratoid = CX.contratoid)
+             LEFT JOIN terceros TX ON (CX.terid = TX.terid)
              WHERE HC.momento LIKE '".$fechahoy."%' Limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
 	$_SESSION['SQL_HISTORIAS'] = $vsql;
 	header("Location: historiacli.php");
@@ -1631,15 +1644,15 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
   if($opcion == "")
   {
      $teridprof = $clase->BDLockup($_SESSION['USERNAME'],'terceros','username','terid');
-	 $cont = $clase->Header("S","W"); ;  	 
+	 $cont = $clase->HeaderBlanco("Historias Clinicas");
 	 $cont.='<table width="100%">
 	           <tr class="CabezoteTabla"> 
 			     <td width="10"> </td>
 			     <td width="37"> <img src="images/iconos/historias.png" width="32" height="32" border="0"> </td>
-				 <td width="400"> Historias Clinias. Usuario <b>'.$_SESSION['USERNAME'].'</b><td>
+				 <td width="750"> Historias Clinias. Usuario <b>'.$_SESSION['USERNAME'].'</b><td>
 				 <td width="27"> <a href="?opcion=nuevo"> <img src="images/icononuevo.png" border="0"> </a> </td>
 				 <form action="?opcion=encontrar" method="POST" name="x">
-				 <td> <input type="text" name="criterio" size="30" placeholder="Criterio a Buscar" tabindex="1" id="default"> </td>
+				 <td> <input type="text" name="criterio" size="20" placeholder="Criterio a Buscar" tabindex="1" id="default"> </td>
 				 <td> <input type="submit" value="Encontrar"> </td> 
 				 <td width="25" align="center"> <a href="?opcion=solohoy" title="Solo Historias de Hoy"> <img src="images/calendario.png" border="0"> </a> </td>
 				 <td width="25" align="center"> <a href="?opcion=soloabiertas" title="Solo Historias Abiertas"> 
@@ -1657,31 +1670,40 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
     $vsql = $_SESSION['SQL_HISTORIAS'];
 	if($vsql == "")
 	{
-    	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico FROM historiacli HC 
+    	$vsql = "SELECT HC.* , T1.nombre NombrePaciente , T2.nombre NombreMedico , TX.nombre Empresa 
+    	         FROM historiacli HC 
 		         INNER JOIN terceros T1 ON (HC.teridpaciente = T1.terid) 
-		         LEFT JOIN terceros T2 ON (HC.teridprof = T2.terid)";
+		         LEFT JOIN terceros T2 ON (HC.teridprof = T2.terid)
+                 LEFT JOIN documentos DX ON (DX.docuid = HC.docuid)
+                 LEFT JOIN contratos CX ON (DX.contratoid = CX.contratoid)
+                 LEFT JOIN terceros TX ON (CX.terid = TX.terid)";
 	    
 		if($teridprof != "")	
 		   $vsql.= " WHERE HC.teridprof = ".$teridprof;	
 		     
 		$vsql.= " ORDER BY momento DESC limit 0,".$_SESSION["NUMREGISTROSXCONSULTA"];
     }
+
 	$conex  = $clase->Conectar();
     $result = mysql_query($vsql,$conex);
 
-	 $cont.='<div style="overflow:auto; height:580px;width:796px;">
-	          <table width="100%">
-	           <tr class="TituloTabla"> 
+	 $cont.='<div style="overflow:auto; height:690px;width:1150px;">
+	          <script type="text/javascript" src="lib/sorttable.js"></script>
+	           <table width="100%" class="sortable">
+	            <tr class="TituloTabla"> 
 			     <td width="10"> </td>
 			     <td width="30">Est</td>			     
 			     <td width="100"> Fecha / Hora </td>
 				 <td width="200"> Nombre del Paciente </td>
-				 <td width="120"> Atendido por </td>				 
-				 <td width="50" align="center"> Examen </td>			
-				 <td width="25"><img src="images/iconoimprimir.png" border="0"></td>
-				 <td width="25"><img src="images/iconoimprimir.png" border="0"></td>
-				 <td width="25"><img src="images/seleccion.png" border="0"></td>
-				 <td width="20"> </td>				 				 
+				 <td width="120"> Empresa </td>
+				 <td width="120"> Asignada a </td>				 
+				 <td width="50"> Examen </td>			
+				 <td width="60"> Vista por </td>				 
+				 <td width="60"> Hace </td>				 
+				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
+				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
+				 <td width="20"><img src="images/seleccion.png" border="0"></td>
+				 <td width="10"> </td>				 				 
 			   </tr>';	
     $i = 0;
     while($row = mysql_fetch_array($result)) 
@@ -1696,15 +1718,18 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 				  <td width="30"> '.IconoEstado($row['estado']).' </td>
 				  <td width="100"> '.substr($row['momento'],0,16).' </td>
 				  <td width="200"> '.substr($row['NombrePaciente'],0,32).' </td>
-				  <td width="120"> '.substr($row['NombreMedico'],0,20).' </td>
-				  <td width="50" align="center"> '.$row['tipoexamen'].' </td>				  
-				  <td width="25"> <a href="impcertificado2013.php?id='.$row['historiaid'].'" rel="facebox"> <img src="images/iconoimprimir.png" border="0"> </td>				  
-				  <td width="25"> <a href="#" OnClick="window.open(\'imphistoria.php?id='.$row['historiaid'].'\',\'ImpHC\',\'width=800,height=600\');"> <img src="images/iconoimprimir.png" border="0"> </td>				  
-				  <td width="25"> <a href="?opcion=cambiar&amp;id='.$row['historiaid'].'" title="Modificar Historia" rel="facebox"> <img src="images/funciones.png" border="0"> </td>';
+				  <td width="120"> <b>'.substr($row['Empresa'],0,20).' </td>
+				  <td width="120"> '.substr($row['NombreMedico'],0,18).' </td>
+				  <td width="50"> <font color="blue"> '.$row['tipoexamen'].' </td>				  
+				  <td width="60"> <b>'.$row['usuariomed'].' </td>
+				  <td width="60"> '.substr($row['momentomed'],11,10).' </td>				  
+				  <td width="20"> <a href="impcertificado2013.php?id='.$row['historiaid'].'" rel="facebox"> <img src="images/iconoimprimir.png" border="0"> </td>				  
+				  <td width="20"> <a href="#" OnClick="window.open(\'imphistoria.php?id='.$row['historiaid'].'\',\'ImpHC\',\'width=800,height=600\');"> <img src="images/iconoimprimir.png" border="0"> </td>				  
+				  <td width="20"> <a href="?opcion=cambiar&amp;id='.$row['historiaid'].'" title="Modificar Historia" rel="facebox"> <img src="images/funciones.png" border="0"> </td>';
 		  if(($row['estado'] != 'C')||($_SESSION['USERNAME'] == 'ADMINISTRADOR')||($_SESSION['USERNAME'] == 'SAID')) 	  
 				  $cont.='<td width="25"> <a href="?opcion=detalles&amp;id='.$row['historiaid'].'" title="Diligenciar Historia"> <img src="images/seleccion.png" border="0"> </td>';
 				  
-		 $cont.='<td width="20"> </td>				  
+		 $cont.='<td width="10"> </td>				  
 				 </tr>';
 	}
 	$cont.='</table>

@@ -343,7 +343,7 @@
   /////////////////////////////////////////  
   if($opcion == "")
   {
-     $cont = $clase->Header("S","W"); ;  	 
+     $cont = $clase->Header("S","W");
 	 $cont.='<table width="100%">
 	           <tr class="CabezoteTabla"> 
 			     <td width="10"> </td>
@@ -373,17 +373,23 @@
 	 $cont.='<table width="100%">
 	           <tr class="TituloTabla"> 
 			     <td width="10"> </td>
-			     <td width="35"> Username </td>
-				 <td width="100"> Nombre </td>
-				 <td width="100"> Email </td>			
-				 <td width="25"> </td>
-				 <td width="25"> </td>				 
-				 <td width="25"> </td>				 
-				 <td width="20"> </td>				 				 
+			     <td width="100"> Username </td>
+				 <td width="200"> Nombre </td>
+				 <td width="250"> Email </td>			
+				 <td width="50"> Rol </td>
+				 <td width="10">&nbsp;</td>				 
+				 <td width="10">&nbsp;</td>				 
+				 <td width="10">&nbsp;</td>				 
+				 <td width="10">&nbsp;</td>				 
 			   </tr>';	
     $i = 0;
     while($row = mysql_fetch_array($result)) 
 	{
+	     
+         if($row['rol'] == "SUP") $ROLX = '<font color="red"><b>SUP</font>';
+         if($row['rol'] == "ADM") $ROLX = "ADM";
+         if($row['rol'] == "MED") $ROLX = '<font color="blue"><b>MED</font>';
+
 	     $i++;
 		 if($i%2 == 0)
 		   $cont.='<tr class="TablaDocsPar">';
@@ -391,14 +397,27 @@
 		   $cont.='<tr class="TablaDocsImPar">';		 
 		          
 		 $cont.=' <td width="10"> </td>
-				  <td width="35"> '.strtoupper($row['username']).' </td>
-				  <td width="100"> '.$row['nombre'].' </td>
-				  <td width="100"> '.$row['email'].'</td>
-				  <td width="25"> <a href="?opcion=permisos&amp;id='.$row['username'].'" title="Modificar Permisos"> <img src="images/iconoasentar.png" border="0"> </td>				  
-				  <td width="25"> <a href="?opcion=cambiarclave&amp;id='.$row['username'].'" rel="facebox"  title="Cambiar Clave"> <img src="images/iconoreversar.png" border="0"> </td>				  
-				  <td width="25"> <a href="?opcion=detalles&amp;id='.$row['username'].'" title="Seleccionar"> <img src="images/seleccion.png" border="0"> </td>				  		
-   				  <td width="20"> </td>				 		  
-				 </tr>';
+				  <td width="100"> <b> '.strtoupper($row['username']).' </td>
+				  <td width="200">  '.$row['nombre'].' </td>
+				  <td width="250">  '.strtolower($row['email']).'</td>
+				  <td width="50"> '.$ROLX.'</td>';
+
+	     if($_SESSION['ROL'] == "SUP")	
+	     {	
+            $cont .=' <td width="25"> <a href="?opcion=permisos&amp;id='.$row['username'].'" title="Modificar Permisos"> <img src="images/iconoasentar.png" border="0"> </td>				  
+				   	  <td width="25"> <a href="?opcion=cambiarclave&amp;id='.$row['username'].'" rel="facebox"  title="Cambiar Clave"> <img src="images/iconoreversar.png" border="0"> </td>				  
+					  <td width="25"> <a href="?opcion=detalles&amp;id='.$row['username'].'" title="Seleccionar"> <img src="images/seleccion.png" border="0"> </td>				  		
+	   				  <td width="10"> </td> </tr>';
+	   	 }
+	   	 else
+	   	 {
+	   	 	 $cont .=' <td width="15"> &nbsp; </td>
+	   	 	           <td width="15"> &nbsp; </td>
+	   	 	           <td width="15"> &nbsp; </td> 
+	   	 	           <td width="15"> &nbsp; </td> 
+	   	 	           </td>';
+	   	 }			  
+
 	}
 	$cont.='</table>
 	        <table width="100%">

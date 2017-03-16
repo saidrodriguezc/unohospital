@@ -22,7 +22,7 @@
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Clave</label>
-					<input id="clave" name="clave" type="password" class="input" data-type="password">
+					<input id="clave" name="clave" type="password" autocomplete="new-password" class="input" data-type="password">
 				</div>
 				<div class="group">
 					<input id="check" type="checkbox" class="check" checked>

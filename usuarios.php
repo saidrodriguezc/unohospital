@@ -44,6 +44,8 @@
     	   $_SESSION["USERNAME"] = $usuario;	    	   
 	       $_SESSION["NOMBREUSUARIO"] = $clase->BDLockup($usuario,"usuarios","username","nombre");
 	       $_SESSION["EMAILUSUARIO"]  = $clase->BDLockup($usuario,"usuarios","username","email");		
+	       $_SESSION["ROL"]  = $clase->BDLockup($usuario,"usuarios","username","rol");
+	       $_SESSION["TERIDPROF"]  = $clase->BDLockup($usuario,"usuarios","username","teridprof");
 		   $_SESSION["NUMREGISTROSXCONSULTA"] = "50";			   
 
 		   // Configuraciones

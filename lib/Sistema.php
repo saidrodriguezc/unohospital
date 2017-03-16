@@ -340,6 +340,143 @@ $menu='<table border="0" width="996">
  return($cont);
 }
 
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////	
+// $titulo Ventana
+////////////////////////////////////////////////////////////////
+function HeaderBlanco($titulo)
+{
+  if(($_SESSION['ESTADO'] == "OUT")||($_SESSION['ESTADO'] == ""))
+  {
+     $_SESSION["ESTADO"] = "OUT";
+	 session_unset();
+	 session_destroy();
+	 header("Location: index.php");
+	 exit();
+  }
+  else
+  {
+	$cont='
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="css/estilo.css" type="text/css">
+	<title> '.$titulo.' </title>
+    <script src="popcalendar.js" type="text/javascript"></script>	
+	<link href="facebox/src/facebox.css" media="screen" rel="stylesheet" type="text/css" />
+	<script src="facebox/lib/jquery.js" type="text/javascript"></script>
+	<script src="facebox/src/facebox.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	    jQuery(document).ready(function($) {
+	    $(\'a[rel*=facebox]\').facebox({
+        loadingImage : \'facebox/src/loading.gif\',
+	    closeImage   : \'facebox/src/closelabel.png\'
+		      })
+	    })
+	</script>				   
+	<script src="lib/jscal/js/jscal2.js"></script>
+	<script src="lib/jscal/js/lang/en.js"></script>
+	<link rel="stylesheet" type="text/css" href="lib/jscal/css/jscal2.css" />
+	<link rel="stylesheet" type="text/css" href="lib/jscal/css/border-radius.css" />
+	<link rel="stylesheet" type="text/css" href="lib/jscal/css/steel/steel.css" />
+	</head>
+	<body leftmargin="0" topmargin="0" rightmargin="0" bottonmargin="0" OnLoad="document.x.default.focus();"> 
+<style>
+   img.Grafico {
+        border: 0px solid #000;
+        background: url("images/cargando.gif") no-repeat center center;
+	   }
+</style>
+	<a name="arriba"></a>
+	<script type="text/javascript">
+		var pagina = \'usuarios.php?opcion=logoutcaducada\';
+		var segundos = 1500000;
+		function redireccion() {
+		document.location.href=pagina;							   
+					       }
+		setTimeout("redireccion()",segundos);
+	</script>
+
+<!-- Encabezado Logo y Datos de Session -->
+<table class="Encabezado" align="center">
+ <tr valign="top">
+   <td width="500"> </td>
+   <td class="MenuEncabezado">
+      <b>'.$_SESSION['NOMBREUSUARIO'].'</b> ( '.$_SESSION['EMPRESAACTUAL'] .' )<br>
+      <a href="users.php?opcion=detalles&id='.$_SESSION['USUARIO'].'"> Menu del Usuario </a> | 
+	  <a href="usuarios.php?opcion=salir"> Salir del Sistema </a> | 
+   </td>      
+ </tr>
+</table>
+
+<!-- Contenido Central del Sistema -->
+<table class="Contenido" align="center">
+<tr>
+  <td valign="top">';
+/*
+$menu='<table border="0" width="996">
+ <tr valign="top">
+  <td width="200" bgcolor="#F6F6F6" valign="top"> 
+    <!-- Menu Lateral -->	
+	<table border="0">
+	  <tr>
+	   <td class="MenuP"> <a href="principal.php"><font color="#FFFFFF">Principal</a> </td>
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="pacientes.php"><img src="images/pacientes.png" class="IconoSubMenu"> Pacientes </a> </td>	   
+	   </tr><tr>
+	   <td class="SubMenuP"> <a href="historiacli.php"><img src="images/historias.png" class="IconoSubMenu"> Historia Clinica </a> </td>	   
+      </tr><tr>
+	   <td class="SubMenuP"> <a href="documentos.php"><img src="images/documentos.png" class="IconoSubMenu"> Documentos </a> </td>	   
+      </tr><tr>
+	   <td class="SubMenuP"> <a href="contratos.php"><img src="images/conceptos.png" class="IconoSubMenu"> Contratos </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="servicios.php"><img src="images/servicios.png" class="IconoSubMenu"> Servicios </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="empresas.php"><img src="images/terceros.png" class="IconoSubMenu"> Empresas </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="profesionales.php"><img src="images/profesionales.png" class="IconoSubMenu"> Profesionales </a> </td>	   
+      </tr><tr>
+	   <td class="SubMenuP"> <a href="examenes.php"><img src="images/examenes.png" class="IconoSubMenu"> Examenes </a> </td>	   
+	   </tr><tr>
+	   <td class="SubMenuP"> <a href="basicas.php"><img src="images/tablasbase.png" class="IconoSubMenu"> Tablas Basicas </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="informes.php"><img src="images/informes.png" class="IconoSubMenu"> Informes </a> </td>	   
+	  </tr><tr>
+	   <td class="MenuP"> Configuraciones </td>
+  	  </tr><tr>
+       <td class="SubMenuP"> <a href="config.php"><img src="images/configurar.png" class="IconoSubMenu"> Configuraciones </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="users.php"><img src="images/usuarios.png" class="IconoSubMenu"> Usuarios y Roles </a> </td>	   
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="auditoria.php"><img src="images/auditoria.png" class="IconoSubMenu"> Auditor de Sucesos </a> </td>	   	   
+	  </tr><tr>
+	   <td class="MenuP"> Soporte </td>
+	  </tr><tr>
+	   <td class="SubMenuP"> <a href="ayuda.php"><img src="images/ayuda.png" class="IconoSubMenu"> Ayuda en Linea </a> </td>
+	  </tr>
+	</table>';
+  
+    // Segun los parametros de la funcion muestra o no el menu con el tipo de Menu
+    if(($vermenu == "S")&&($tipomenu=="W"))
+      $cont.= $menu;
+
+   if(($vermenu == "S")&&($tipomenu=="T"))
+     $cont.= $menutablet;
+*/
+   $cont.='</td><td valign="top">';
+
+   /// Muestro los avisos del Sistema	
+   $avisos = $_SESSION["SYSAVISO"];
+
+   if($avisos != ""){
+     $cont.= '<center>'.$avisos.'</center>';
+     $_SESSION["SYSAVISO"]="";
+   }  
+  return($cont);
+ } // IF Session es Valida
+} // Fin de la Funcion
+
 ////////////////////////////////////////////////////////////////////
 function SoloCSS()
 {

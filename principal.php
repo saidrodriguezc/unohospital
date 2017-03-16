@@ -10,8 +10,44 @@
   $opcion = "";
   $opcion = $_GET["opcion"];
 
+
   /////////////////////////////////////////  
   if($opcion == "")
+  {
+    $_SESSION["NUMREGISTROSXCONSULTA"] = 50;
+	 $cont = $clase->Header("S","W");  	 
+	 $cont.='<table width="100%">
+	           <tr class="CabezoteTabla"> 
+			     <td width="10"> </td>
+			     <td width="37"> <img src="images/iconos/principal.png" width="32" height="32" border="0"> </td>
+				 <td width="400"> <b>Principal</b> :: Menu Principal<td>
+				 <td width="370" align="right"> <a href="principal.php?opcion=dashboard">
+				  <input type="button" value="Ir al Dashboard" style="border: none; background: #3a7999; color: #f2f2f2; padding: 10px; font-size: 16px; border-radius: 5px; position: relative; box-sizing: border-box; transition: all 500ms ease;"></a>  </td>
+				  <td width="30">&nbsp;</td>
+			   </tr>	 			   
+			 </table><center><br><br><br><br>
+             <table width="100%">
+              <tr height="500" valign="top"> 
+				<td width="500" align="center"> 
+                   <br><br><br>
+				      <table width="490">
+						 <tr height="30"><td align="center">&nbsp;</td></tr>					
+						 <tr height="100" bgcolor="white"><td align="center">
+						 <center><img src="images/logoempresa2.jpg" border="0" width="500" heigth="400"> </td></tr>					
+					  </table> 	
+					  <br><br><br><br>
+				  <center><font face="3" color="gray">Este Aplicativo de Software se encuentra licenciado a nombre de <br>
+				          <b>Salud Empresarial IPS</b> y se autoriza su uso Total como CoAutor y <br>
+				          productor del mismo. Informese a los entes de control y a quien corresponda.<br>
+ 				          Derechos Reservados. 
+				</td></tr></table>';      
+			    
+   ////////////////////////////////////////////////////////////
+   $cont.='</table>';			 
+  }
+
+  /////////////////////////////////////////  
+  if($opcion == "dashboard")
   {
     $_SESSION["NUMREGISTROSXCONSULTA"] = 50;
 	 $cont = $clase->Header("S","W");  	 
