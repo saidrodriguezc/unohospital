@@ -192,10 +192,9 @@
    	    if($row['antefam015'] != "")      	  $texto.= "PSIQUIATRICOS :  \n".$row['antefam15']."\n\n"; 
    	    if($row['antefam016'] != "")      	  $texto.= "OTROS :  \n".$row['antefam16']."\n\n"; 
 	
-	    $pdf->SetFont('Arial','',8);
-	    $pdf->SetXY(5,122);              	    $pdf->MultiCell(190,3,$texto); 
+	    $pdf->SetFont('Arial','',8);            $texto = $row['observa1'];
+	    $pdf->SetXY(5,183);              	    $pdf->MultiCell(190,3,$texto); 
 
-		
         // Antecedentes Personales 
 		// Columna Izquierda
 		$cont = 'CONGENITAS : ';                             $pdf->Text(6,210,$cont);    
@@ -331,10 +330,6 @@
 	        $pdf->Image('firmas/'.$firmapaci,129,250,40,15,0);
       }
   
-	 $pdf->Rect(4,27,201,5);	 	 
-	 $pdf->Rect(4,33,201,30);	
-	 $pdf->Rect(4,64,201,5);	 	 
-	 $pdf->Rect(4,70,201,23);	
 	 $pdf->Rect(4,94,201,5);	 	 
 	 $pdf->Rect(4,100,201,79);	
 	 $pdf->Rect(4,180,201,5);	 	 
@@ -343,15 +338,13 @@
 	 $pdf->Rect(4,213,201,35);	
 
 	 $pdf->SetFont('Arial','B',8);
-	 $cont= 'GINECOBSTETRICOS';                                  	 $pdf->Text(6,31,$cont); 
-	 $cont= 'REVISION POR SISTEMAS';                               	 $pdf->Text(6,68,$cont); 
 	 $cont= 'EXAMEN FISICO';                                      	 $pdf->Text(6,98,$cont); 
 	 $cont= 'RESULTADOS EXAMENES PARACLINICOS APLICADOS';          	 $pdf->Text(6,184,$cont); 	 
 	 $cont= 'CONCEPTO PROFESIONAL - RECOMENDACIONES';                $pdf->Text(6,211,$cont); 	 
 	  
 
 	   /// Imprimo los Formatos del Papel
-	   $pdf->Image('images/logoempresa.jpg',8,6,75,17,0);
+	   $pdf->Image('images/logoempresa2.jpg',8,6,75,17,0);
 
        $pdf->SetFont('Arial','B',8);
 	   $cont= 'Pág 2 de 2';
@@ -363,48 +356,70 @@
 	   $pdf->SetFont('Arial','B',12);
 	   $cont= 'No. '.$row['nit'];                                                $pdf->Text(135,21,$cont);	
 	   
-	   // Datos de Menarca
-       $pdf->SetFont('Arial','',8);
-	   $cont= 'MENARCA : _______________________________________________';         $pdf->Text(6,39,$cont);		 	 
-	   $cont= 'CICLOS : __________________________________________________';       $pdf->Text(106,39,$cont);		 	 	   
-	   $cont= 'GESTACIONES : ___________________________________________';         $pdf->Text(6,44,$cont);		 	 
-	   $cont= 'PARTOS : _________________________________________________';        $pdf->Text(106,44,$cont);		 	 	   
-	   $cont= 'ABORTOS : _______________________________________________';         $pdf->Text(6,49,$cont);		 	 
-	   $cont= 'CESAREAS : _______________________________________________';        $pdf->Text(106,49,$cont);		 	 	   
-	   $cont= 'CITOLOGIA :         __________________________________________';    $pdf->Text(6,54,$cont);		 	 
-	   $cont= 'MAMOGRAFIA :           ________________________________________';   $pdf->Text(106,54,$cont);		 	 	   
-	   $cont= 'HIJOS VIVOS : _____';                                               $pdf->Text(6,59,$cont);		 	 	   	   
-	   $cont= 'ULTIMA MENSTRUACION : ___________________________';                 $pdf->Text(35,59,$cont);		 	 	   	   
-	   $cont= 'PLANIFICA : ___ METODO : ______________________________';           $pdf->Text(115,59,$cont);		 	 	   	   	   
        
-	   // Completanto los Campos
-	   $pdf->Text(23,39,$row['gineco01']);	                           $pdf->Text(120,39,$row['gineco02']);	
-	   $pdf->Text(29,44,$row['gineco03']);	                           $pdf->Text(120,44,$row['gineco04']);	
-	   $pdf->Text(23,49,$row['gineco05']);	                           $pdf->Text(124,49,$row['gineco06']);	
-	   $pdf->Text(30,54,$row['gineco08']);	                           $pdf->Text(136,54,$row['gineco10']);	
-	   $pdf->Text(27,59,$row['gineco11']);	                           $pdf->Text(72,59,$row['gineco12']);
-       $pdf->Text(152,59,$row['gineco14']);	   
+       $terid = $clase->BDLockup($id,"historiacli","historiaid","teridpaciente");
+       $genero = $clase->BDLockup($terid,"terceros","terid","genero");
+       
+       if($genero == "F")
+       { 
+	       $pdf->Rect(4,64,201,5);            $pdf->SetFont('Arial','B',8);
+	       $pdf->Rect(4,33,201,30);	          $cont= 'GINECOBSTETRICOS';             $pdf->Text(6,31,$cont); 
+		   
+		   // Datos de Menarca
+	       $pdf->SetFont('Arial','',8);
+		   $cont= 'MENARCA : _______________________________________________';         $pdf->Text(6,39,$cont);		 	 
+		   $cont= 'CICLOS : __________________________________________________';       $pdf->Text(106,39,$cont);		 	 	   
+		   $cont= 'GESTACIONES : ___________________________________________';         $pdf->Text(6,44,$cont);		 	 
+		   $cont= 'PARTOS : _________________________________________________';        $pdf->Text(106,44,$cont);		 	 	   
+		   $cont= 'ABORTOS : _______________________________________________';         $pdf->Text(6,49,$cont);		 	 
+		   $cont= 'CESAREAS : _______________________________________________';        $pdf->Text(106,49,$cont);		 	 	   
+		   $cont= 'CITOLOGIA :         __________________________________________';    $pdf->Text(6,54,$cont);		 	 
+		   $cont= 'MAMOGRAFIA :           ________________________________________';   $pdf->Text(106,54,$cont);		 	 	   
+		   $cont= 'HIJOS VIVOS : _____';                                               $pdf->Text(6,59,$cont);		 	 	   	   
+		   $cont= 'ULTIMA MENSTRUACION : ___________________________';                 $pdf->Text(35,59,$cont);		 	 	   	   
+		   $cont= 'PLANIFICA : ___ METODO : ______________________________';           $pdf->Text(115,59,$cont);		 	 	   	   	   
+	       
+		   // Completanto los Campos
+		   $pdf->Text(23,39,$row['gineco01']);	                           $pdf->Text(120,39,$row['gineco02']);	
+		   $pdf->Text(29,44,$row['gineco03']);	                           $pdf->Text(120,44,$row['gineco04']);	
+		   $pdf->Text(23,49,$row['gineco05']);	                           $pdf->Text(124,49,$row['gineco06']);	
+		   $pdf->Text(30,54,$row['gineco08']);	                           $pdf->Text(136,54,$row['gineco10']);	
+		   $pdf->Text(27,59,$row['gineco11']);	                           $pdf->Text(72,59,$row['gineco12']);
+	       $pdf->Text(152,59,$row['gineco14']);	   
 
-       $pdf->SetFont('Arial','B',9);                                   
-	   $pdf->Text(25,54,ValorSINO($row['gineco07']));	   	           $pdf->Text(129,54,ValorSINO($row['gineco09']));	   	   
-	   $pdf->Text(132,59,ValorSINO($row['gineco13']));	   
+	       $pdf->SetFont('Arial','B',9);                                   
+		   $pdf->Text(25,54,ValorSINO($row['gineco07']));	   	           $pdf->Text(129,54,ValorSINO($row['gineco09']));	   	   
+		   $pdf->Text(132,59,ValorSINO($row['gineco13']));	   
+		   $y = 75;
+       }
+       else
+       	  $y = 40;
 
 	   // Datos de Examen Fisico
+       $pdf->SetFont('Arial','B',8);
+       $cont= 'REVISION POR SISTEMAS';                               	   $pdf->Text(6,$y-7,$cont); 
+       $pdf->Rect(4,$y-11,201,5);                                           
+       
+       if($y == 40)
+           $pdf->Rect(4,$y-4,201,55);	
+       else
+           $pdf->Rect(4,$y-4,201,23);	
+        
        $pdf->SetFont('Arial','',8);
-	   $cont= 'PIEL Y FANERAS : ';               $pdf->Text(6,75,$cont);                   $pdf->Text(37,75,ValorSINO($row['revsis01']));		 	 
-	   $cont= 'VISUAL : ';                       $pdf->Text(57,75,$cont);		 	         $pdf->Text(90,75,ValorSINO($row['revsis02']));
-	   $cont= 'ORL : ';                          $pdf->Text(107,75,$cont);		 	 	 $pdf->Text(140,75,ValorSINO($row['revsis03']));  
-	   $cont= 'CARDIOVASCULAR : ';               $pdf->Text(155,75,$cont);		 	 	 $pdf->Text(197,75,ValorSINO($row['revsis04']));         
-	   $cont= 'RESPIRATORIO : ';                 $pdf->Text(6,80,$cont);		 	         $pdf->Text(37,80,ValorSINO($row['revsis05']));		 	 
-	   $cont= 'GASTROINTESTINAL : ';             $pdf->Text(57,80,$cont);		 	         $pdf->Text(90,80,ValorSINO($row['revsis06']));		 	 
-	   $cont= 'GENITOURINARIO : ';               $pdf->Text(107,80,$cont);		 	 	 $pdf->Text(140,80,ValorSINO($row['revsis07']));		 	   
-	   $cont= 'OSTEOMUSCULAR : ';                $pdf->Text(155,80,$cont);		 	 	 $pdf->Text(197,80,ValorSINO($row['revsis08'])); 
-	   $cont= 'HEMATOLOGICO : ';                 $pdf->Text(6,85,$cont);		 	         $pdf->Text(37,85,ValorSINO($row['revsis09']));		 	 
-	   $cont= 'INMUNOLOGICO : ';                 $pdf->Text(57,85,$cont);		 	         $pdf->Text(90,85,ValorSINO($row['revsis10']));		 	 
-	   $cont= 'NEUROLOGICO: ';                   $pdf->Text(107,85,$cont);		 	 	 $pdf->Text(140,85,ValorSINO($row['revsis11']));		 	   
-	   $cont= 'OTROS : ';                        $pdf->Text(155,85,$cont);		 	 	 $pdf->Text(197,85,ValorSINO($row['revsis12'])); 
+	   $cont= 'PIEL Y FANERAS : ';               $pdf->Text(6,$y,$cont);                 $pdf->Text(37,$y,ValorSINO($row['revsis01']));		 	 
+	   $cont= 'VISUAL : ';                       $pdf->Text(57,$y,$cont);		 	     $pdf->Text(90,$y,ValorSINO($row['revsis02']));
+	   $cont= 'ORL : ';                          $pdf->Text(107,$y,$cont);		 	 	 $pdf->Text(140,$y,ValorSINO($row['revsis03']));  
+	   $cont= 'CARDIOVASCULAR : ';               $pdf->Text(155,$y,$cont);		 	 	 $pdf->Text(197,$y,ValorSINO($row['revsis04']));         
+	   $cont= 'RESPIRATORIO : ';                 $pdf->Text(6,$y+5,$cont);		 	     $pdf->Text(37,$y+5,ValorSINO($row['revsis05']));		 	 
+	   $cont= 'GASTROINTESTINAL : ';             $pdf->Text(57,$y+5,$cont);		 	     $pdf->Text(90,$y+5,ValorSINO($row['revsis06']));		 	 
+	   $cont= 'GENITOURINARIO : ';               $pdf->Text(107,$y+5,$cont);		 	 $pdf->Text(140,$y+5,ValorSINO($row['revsis07']));		 	   
+	   $cont= 'OSTEOMUSCULAR : ';                $pdf->Text(155,$y+5,$cont);		 	 $pdf->Text(197,$y+5,ValorSINO($row['revsis08'])); 
+	   $cont= 'HEMATOLOGICO : ';                 $pdf->Text(6,$y+10,$cont);		 	     $pdf->Text(37,$y+10,ValorSINO($row['revsis09']));		 	 
+	   $cont= 'INMUNOLOGICO : ';                 $pdf->Text(57,$y+10,$cont);		 	 $pdf->Text(90,$y+10,ValorSINO($row['revsis10']));		 	 
+	   $cont= 'NEUROLOGICO: ';                   $pdf->Text(107,$y+10,$cont);		 	 $pdf->Text(140,$y+10,ValorSINO($row['revsis11']));		 	   
+	   $cont= 'OTROS : ';                        $pdf->Text(155,$y+10,$cont);		 	 $pdf->Text(197,$y+10,ValorSINO($row['revsis12'])); 
 	   $cont= 'OBSERVACIONES : ___________________________________________________________________________________________________________';                           
-	   $pdf->Text(6,90,$cont);		 	 	     $pdf->Text(33,90,$row['observa4']);		 	   
+	   $pdf->Text(6,90,$cont);		 	 	     $pdf->Text(33,$y+49,$row['observa4']);		 	   
 	         
        //// DATOS EXAMEN FISICO
 	   $cont= 'PESO : ____ kg';                $pdf->Text(6,105,$cont);		 	         $pdf->Text(17,105,$row['efpeso']);		 	 
@@ -450,11 +465,11 @@
    	    if($row['ef29'] != "")   		      $texto.= "OTROS :  \n".$row['ef29']."\n\n"; 									
 														
 	    $pdf->SetFont('Arial','',7.5);
-	    $pdf->SetXY(5,114);              	    $pdf->MultiCell(190,3,$texto); 
+	    $pdf->SetXY(5,114);              	  $pdf->MultiCell(190,3,$texto); 
 
        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
        /// RESULTADOS EXAMENES PARACLINICOS		
-		
+	   /*	
 	   $vsql2="SELECT DD.dedocumid ddid, DD.resultado, I.descripcion FROM historiacli HC
 	    	  INNER JOIN dedocumentos DD ON ( DD.docuid = HC.docuid )
 		      INNER JOIN item I ON ( DD.itemid = I.itemid )
@@ -476,6 +491,10 @@
 		   $y2+=4;
 	   }
 	   	
+	   	*/
+	   $pdf->SetFont('Arial','B',7.5);                 $texto = $row['observa6'];
+	   $pdf->SetXY(6,187);                        	   $pdf->MultiCell(190,3,$texto); 
+
        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
        /// CONCEPTO PROFESIONAL Y RECOMENDACIONES
 	   $pdf->SetFont('Arial','B',7.5);

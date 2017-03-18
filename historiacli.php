@@ -474,7 +474,8 @@
     // Si es un medico - la Marca como vista por él
     if($_SESSION['ROL'] == "MED")
     {	
-       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , momento2 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
+       $teridprofesional = $clase->BDLockup($_SESSION['USERNAME'],"usuarios","username","teridprof");
+       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , teridprof = ".$teridprofesional." , momento2 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
        $clase->EjecutarSQL($vsql2);
     }
 
