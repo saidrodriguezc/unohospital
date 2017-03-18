@@ -247,7 +247,7 @@
 	 $pdf=new FPDF();
 	 $pdf->AddPage();
      $x=25;
-     	  echo "firmas/".$firmamedico; exit;
+
 	 /// Primero Coloco las Firmas del Medico y paciente para que queden detras del Contenido
   	 $firmamedico = $clase->BDLockup($row['teridprof'],'terceros','terid','rutafirma');
 	 if($firmamedico != "")

@@ -142,12 +142,21 @@
     $empresa      = $_POST['empresa'];
     $profesional  = $_POST['profesional'];	
 	
-	/// Cambio el Tipo de Examen en la HC	
-    $clase->EjecutarSQL("UPDATE historiacli SET tipoexamen='".$tipoexamen."' , teridprof=".$profesional." WHERE historiaid=".$id);
+	/// Busco la Informacion Necesaria para los UPDATE	
+	$prof_actual = $clase->BDLockup($id,"historiacli","historiaid","teridprof");
+	$docuidps    = $clase->BDLockup($id,"historiacli","historiaid","docuid");
+	$nitempresa = $clase->BDLockup($empresa,"terceros","nit","terid");
+    $contratoid = $clase->SeleccionarUno("SELECT MAX(contratoid) FROM contratos WHERE terid=".$nitempresa);    
+	
+	/// Cambio el Tipo de Examen
+	$clase->EjecutarSQL("UPDATE historiacli SET tipoexamen='".$tipoexamen."' WHERE historiaid=".$id);
+
+    /// Cambio el Medico
+	$clase->EjecutarSQL("UPDATE dedocumentos SET prorea = '".$profesional."' WHERE prorea = '".$prof_actual."' AND docuid = ".$docuidps);
+    $clase->EjecutarSQL("UPDATE historiacli SET teridprof=".$profesional." WHERE historiaid=".$id);
 	
 	/// Cambio la Empresa en la Tabla Documento	
-    $docuid = $clase->BDLockup($id,'historiacli','historiaid','docuid');
-    $clase->EjecutarSQL("UPDATE documentos SET nitempresa='".$empresa."' WHERE docuid=".$docuid);
+    $clase->EjecutarSQL("UPDATE documentos SET nitempresa='".$empresa."' , contratoid = ".$contratoid." WHERE docuid=".$docuidps);
 	
 	$clase->Aviso(1,"Datos de la Historia y Certificado Cambiados con Exito");  		
     header("Location: historiacli.php");
@@ -461,7 +470,16 @@
   if($opcion == "detalles")
   {
     $id = $_GET['id'];
-    $cont = $clase->Header("N","W"); ;  	 
+    
+    // Si es un medico - la Marca como vista por él
+    if($_SESSION['ROL'] == "MED")
+    {	
+       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , momento2 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
+       $clase->EjecutarSQL($vsql2);
+    }
+
+    // Imprimi en Pantalla
+    $cont = $clase->Header("N","W");
   	$vsql = "SELECT * FROM historiacli H INNER JOIN historiaself HS ON (H.historiaid = HS.historiaid) 
 	         INNER JOIN terceros T ON (H.teridpaciente = T.terid) WHERE H.historiaid=".$id;
         
@@ -1597,10 +1615,18 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 	     $clase->Aviso(2,"La Historia Clinica ha Sido Abierta Exitosamente");  		
 	   }
 	}   
-	if($opcion == "cerrar"){
-	   $vsql = "UPDATE historiacli SET estado = 'C' WHERE historiaid=".$id;
-       $clase->EjecutarSQL($vsql);  
-	   $clase->Aviso(1,"La Historia Clinica se ha Cerrado con Exito");  		
+	if($opcion == "cerrar")
+	{
+	    // Si es un medico - la Marca como vista por él
+        if($_SESSION['ROL'] == "MED")
+        {	
+           $vsql2 = "UPDATE historiacli SET usuariocierra = '".$_SESSION['USERNAME']."' , momento3 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
+           $clase->EjecutarSQL($vsql2);
+        }
+
+	    $vsql = "UPDATE historiacli SET estado = 'C' WHERE historiaid=".$id;
+        $clase->EjecutarSQL($vsql);  
+	    $clase->Aviso(1,"La Historia Clinica se ha Cerrado con Exito");  		
 	}   
 		
 	header("Location: historiacli.php?opcion=detalles&id=".$id);
@@ -1709,6 +1735,18 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
     $i = 0;
     while($row = mysql_fetch_array($result)) 
 	{
+	     /// Momento en que el Medico Vió la Historia Clinica
+	     if($row['usuariomed']!="")
+	        $medvisto = '<font color="green">'.$row['usuariomed'].'</font><br>'.substr($row['momento2'],8,2).'/'.substr($row['momento2'],5,2).'/'.substr($row['momento2'],2,2).' '.substr($row['momento2'],11,5); 
+         else
+         	$medvisto = '';
+
+         /// Momento en que el Medico Cerró la Historia Clinica
+	     if($row['usuariocierra']!="")
+	        $medcierra = '<font color="red">'.$row['usuariocierra'].'</font><br>'.substr($row['momento3'],8,2).'/'.substr($row['momento3'],5,2).'/'.substr($row['momento3'],2,2).' '.substr($row['momento2'],11,5); 
+         else
+         	$medcierra = '';
+
 	     $i++;
 		 if($i%2 == 0)
 		   $cont.='<tr class="TablaDocsPar">';
@@ -1717,13 +1755,14 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 		          
 		 $cont.=' <td width="5"> </td>
 				  <td width="20"> '.IconoEstado($row['estado']).' </td>
-				  <td width="90"> '.substr($row['momento'],8,2).'/'.substr($row['momento'],5,2).'/'.substr($row['momento'],2,2).'&nbsp;&nbsp;&nbsp;'.substr($row['momento'],11,5).' </td>
+				  <td width="90"> '.substr($row['momento'],8,2).'/'.substr($row['momento'],5,2).'/'.substr($row['momento'],2,2).
+				                  '&nbsp;&nbsp;&nbsp;<font color="blue">'.substr($row['momento'],11,5).' </td>
 				  <td width="180"> '.substr($row['NombrePaciente'],0,32).' </td>
-				  <td width="150"> <b>'.substr($row['Empresa'],0,20).' </td>
-				  <td width="150"> '.substr($row['NombreMedico'],0,22).' </td>
+				  <td width="150"> <b>'.substr($row['Empresa'],0,21).' </td>
+				  <td width="150"> <font color="gray">'.substr($row['NombreMedico'],0,22).' </td>
 				  <td width="50"> <font color="blue"> '.$row['tipoexamen'].' </td>				  
-				  <td width="60"> <b>'.$row['usuariomed'].' </td>
-				  <td width="60"> '.substr($row['momentomed'],11,10).' </td>				  
+				  <td width="60"> '.$medvisto.'</td>
+				  <td width="60"> '.$medcierra.' </td>				  
 				  <td width="20"> <a href="impcertificado2013.php?id='.$row['historiaid'].'" rel="facebox"> <img src="images/iconoimprimir.png" border="0"> </td>				  
 				  <td width="20"> <a href="#" OnClick="window.open(\'imphistoria.php?id='.$row['historiaid'].'\',\'ImpHC\',\'width=800,height=600\');"> <img src="images/iconoimprimir.png" border="0"> </td>				  
 				  <td width="20"> <a href="?opcion=cambiar&amp;id='.$row['historiaid'].'" title="Modificar Historia" rel="facebox"> <img src="images/funciones.png" border="0"> </td>';
