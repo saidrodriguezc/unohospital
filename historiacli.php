@@ -1743,7 +1743,7 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 
          /// Momento en que el Medico Cerró la Historia Clinica
 	     if($row['usuariocierra']!="")
-	        $medcierra = '<font color="red">'.$row['usuariocierra'].'</font><br>'.substr($row['momento3'],8,2).'/'.substr($row['momento3'],5,2).'/'.substr($row['momento3'],2,2).' '.substr($row['momento2'],11,5); 
+	        $medcierra = '<font color="red">'.$row['usuariocierra'].'</font><br>'.substr($row['momento3'],8,2).'/'.substr($row['momento3'],5,2).'/'.substr($row['momento3'],2,2).' '.substr($row['momento3'],11,5); 
          else
          	$medcierra = '';
 
