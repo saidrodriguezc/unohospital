@@ -1662,6 +1662,7 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
          $cont.='<td width="25"> <a href="?opcion=nofiltro"> <img src="images/nofiltro.png"> </a> </td>'; 
 
 		$cont.=' </form>
+		         <td width="25" align="center"> <a href="principal.php" title="Menu Principal"> <img src="images/iconos/principal.png" border="0" width="32" height="32"> </a></td>
     		     <td width="10"> </td>
 			   </tr>	 			   
 			 </table> ';	
@@ -1687,23 +1688,23 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 	$conex  = $clase->Conectar();
     $result = mysql_query($vsql,$conex);
 
-	 $cont.='<div style="overflow:auto; height:690px;width:1150px;">
+	 $cont.='<div style="overflow:auto; height:650px;width:1200px;">
 	          <script type="text/javascript" src="lib/sorttable.js"></script>
 	           <table width="100%" class="sortable">
 	            <tr class="TituloTabla"> 
-			     <td width="10"> </td>
-			     <td width="30">Est</td>			     
-			     <td width="100"> Fecha / Hora </td>
-				 <td width="200"> Nombre del Paciente </td>
-				 <td width="120"> Empresa </td>
-				 <td width="120"> Asignada a </td>				 
+			     <td width="5"> </td>
+			     <td width="20">Es</td>			     
+			     <td width="90"> Fecha | Hora </td>
+				 <td width="180"> Nombre del Paciente </td>
+				 <td width="150"> Empresa </td>
+				 <td width="150"> Asignada a </td>				 
 				 <td width="50"> Examen </td>			
-				 <td width="60"> Vista por </td>				 
-				 <td width="60"> Hace </td>				 
+				 <td width="80"> Vista por </td>				 
+				 <td width="80"> Cerrada por </td>				 
 				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
 				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
-				 <td width="20"><img src="images/seleccion.png" border="0"></td>
-				 <td width="10"> </td>				 				 
+				 <td width="20"><img src="images/funciones.png" border="0"></td>
+				 <td width="20"><img src="images/seleccion.png" border="0"></td>		 				 
 			   </tr>';	
     $i = 0;
     while($row = mysql_fetch_array($result)) 
@@ -1714,12 +1715,12 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 		 else
 		   $cont.='<tr class="TablaDocsImPar">';		 
 		          
-		 $cont.=' <td width="10"> </td>
-				  <td width="30"> '.IconoEstado($row['estado']).' </td>
-				  <td width="100"> '.substr($row['momento'],0,16).' </td>
-				  <td width="200"> '.substr($row['NombrePaciente'],0,32).' </td>
-				  <td width="120"> <b>'.substr($row['Empresa'],0,20).' </td>
-				  <td width="120"> '.substr($row['NombreMedico'],0,18).' </td>
+		 $cont.=' <td width="5"> </td>
+				  <td width="20"> '.IconoEstado($row['estado']).' </td>
+				  <td width="90"> '.substr($row['momento'],8,2).'/'.substr($row['momento'],5,2).'/'.substr($row['momento'],2,2).'&nbsp;&nbsp;&nbsp;'.substr($row['momento'],11,5).' </td>
+				  <td width="180"> '.substr($row['NombrePaciente'],0,32).' </td>
+				  <td width="150"> <b>'.substr($row['Empresa'],0,20).' </td>
+				  <td width="150"> '.substr($row['NombreMedico'],0,22).' </td>
 				  <td width="50"> <font color="blue"> '.$row['tipoexamen'].' </td>				  
 				  <td width="60"> <b>'.$row['usuariomed'].' </td>
 				  <td width="60"> '.substr($row['momentomed'],11,10).' </td>				  
@@ -1729,10 +1730,9 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 		  if(($row['estado'] != 'C')||($_SESSION['USERNAME'] == 'ADMINISTRADOR')||($_SESSION['USERNAME'] == 'SAID')) 	  
 				  $cont.='<td width="25"> <a href="?opcion=detalles&amp;id='.$row['historiaid'].'" title="Diligenciar Historia"> <img src="images/seleccion.png" border="0"> </td>';
 				  
-		 $cont.='<td width="10"> </td>				  
-				 </tr>';
+		 $cont.='</tr>';
 	}
-	$cont.='</table>
+	$cont.='</table></div>
 	        <table width="100%">
 	           <tr class="PieTabla"> 
 			     <td width="10"> </td>
