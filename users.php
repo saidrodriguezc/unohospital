@@ -9,6 +9,28 @@
   $opcion = "";
   $opcion = $_GET["opcion"];
 
+  /////////////////////////////////////////  
+  if($opcion == "inactivar")
+  {
+	    $id = $_GET['id'];
+	    $activo = $clase->BDLockup($id,"usuarios","username","activo");
+
+	    if($activo == "")
+	    {
+	       $vsql = 'UPDATE usuarios SET activo = "CHECKED" WHERE username = "'.$id.'"';
+	       $clase->EjecutarSQL($vsql);
+	       $clase->Aviso(1,"Usuario activado con Exito");  	
+	    }
+	    else
+	    {
+	       $vsql = 'UPDATE usuarios SET activo = "" WHERE username = "'.$id.'"';
+	       $clase->EjecutarSQL($vsql);
+	       $clase->Aviso(3,"Usuario <b>DESActivado</b> con Exito");  	
+	    }
+
+	    header("Location: users.php");
+  }
+
   ////////////////////////////////////////////////////// 
   if($opcion == "accesos")
   {
@@ -373,6 +395,7 @@
 	 $cont.='<table width="100%">
 	           <tr class="TituloTabla"> 
 			     <td width="10"> </td>
+			     <td width="25"> &nbsp; </td>
 			     <td width="100"> Username </td>
 				 <td width="200"> Nombre </td>
 				 <td width="250"> Email </td>			
@@ -380,12 +403,14 @@
 				 <td width="10">&nbsp;</td>				 
 				 <td width="10">&nbsp;</td>				 
 				 <td width="10">&nbsp;</td>				 
+				 <td width="10">&nbsp;</td>			
 				 <td width="10">&nbsp;</td>				 
 			   </tr>';	
     $i = 0;
     while($row = mysql_fetch_array($result)) 
 	{
-	     
+	     if($row['activo'] == "")  $color = '<font color="gray">';       else       $color = '<font color="black">';
+
          if($row['rol'] == "SUP") $ROLX = '<font color="red"><b>SUP</font>';
          if($row['rol'] == "ADM") $ROLX = "ADM";
          if($row['rol'] == "MED") $ROLX = '<font color="blue"><b>MED</font>';
@@ -397,16 +422,18 @@
 		   $cont.='<tr class="TablaDocsImPar">';		 
 		          
 		 $cont.=' <td width="10"> </td>
-				  <td width="100"> <b> '.strtoupper($row['username']).' </td>
-				  <td width="200">  '.$row['nombre'].' </td>
-				  <td width="250">  '.strtolower($row['email']).'</td>
-				  <td width="50"> '.$ROLX.'</td>';
+		          <td width="25" align="center"> <input type="checkbox" value="S" '.$row['activo'].' disabled> </td>
+				  <td width="100"> <b> '.$color.strtoupper($row['username']).' </td>
+				  <td width="200">  '.$color.$row['nombre'].' </td>
+				  <td width="250">  '.$color.strtolower($row['email']).'</td>
+				  <td width="50"> '.$color.$ROLX.'</td>';
 
 	     if($_SESSION['ROL'] == "SUP")	
 	     {	
             $cont .=' <td width="25"> <a href="?opcion=permisos&amp;id='.$row['username'].'" title="Modificar Permisos"> <img src="images/iconoasentar.png" border="0"> </td>				  
 				   	  <td width="25"> <a href="?opcion=cambiarclave&amp;id='.$row['username'].'" rel="facebox"  title="Cambiar Clave"> <img src="images/iconoreversar.png" border="0"> </td>				  
-					  <td width="25"> <a href="?opcion=detalles&amp;id='.$row['username'].'" title="Seleccionar"> <img src="images/seleccion.png" border="0"> </td>				  		
+					  <td width="25"> <a href="?opcion=inactivar&amp;id='.$row['username'].'" title="Inactivar"> <img src="images/iconoborrar.png" border="0"> </td>				  		
+					  <td width="25"> <a href="?opcion=detalles&amp;id='.$row['username'].'" title="Modificar"> <img src="images/seleccion.png" border="0"> </td>				  		
 	   				  <td width="10"> </td> </tr>';
 	   	 }
 	   	 else

@@ -9,6 +9,57 @@
   $opcion = "";
   $opcion = $_GET["opcion"];
 
+
+  /////////////////////////////////////////  
+  if($opcion == "menuhc")
+  {
+     $historiaid = $_GET['id'];
+     $estado     = $clase->BDLockup($historiaid,"historiacli","historiaid","estado");
+     $cont='<table width="400">
+	           <tr class="CabezoteTabla"> 
+				 <td align="center"> <b>Opciones de Historia Clinica </b><td> 
+			   </tr> 
+			</table>
+		    <table width="400">
+		      <tr class="TablaDocsImPar">				    
+				<td width="40" align="center"> <img src="images/iconoimprimir.png" border="0"> </td> 
+ 				<td width="360"> <a href="#" OnClick="window.open(\'imphistoria.php?id='.$historiaid.'\',\'ImpHC\',\'width=800,height=600\');"> Ver Historia Clinica en formato PDF </a> </td>				
+			  </tr>
+			  <tr class="TablaDocsPar">				
+				<td width="40" align="center"> <img src="images/iconoimprimir.png" border="0"> </td> 			  
+			    <td width="360"> <a href="#" OnClick="window.open(\'impconsentimiento.php?id='.$historiaid.'\',\'ImpCon\',\'width=800,height=600\');"> Ver Consentimiento Informado </a></td>			
+			  <tr class="TablaDocsImPar">				
+				<td width="40" align="center"> <img src="images/firma.png" border="0"> </td> 			  
+			    <td width="360"> <a href="#" OnClick="window.open(\'remisiones.php?opcion=nuevo&id='.$historiaid.'\',\'Remi\',\'width=800,height=600\');"> Generar una Remision </a></td>				
+			  </tr>';
+
+	 ////////////////////////////////////////////////////////////////
+	 // Solo Muestro el Certificado a Historias Cerradas	
+	 ////////////////////////////////////////////////////////////////	  
+	 if($estado == "C")
+	 {
+	 	$cont.='</table>
+	 	        <table width="400">
+	              <tr class="CabezoteTabla"> 
+				   <td align="center"> <b> Emisi&oacute;n de Certificados </b> <td> 
+			      </tr> 
+			    </table>
+			    <table width="400">
+			      <tr class="TablaDocsImPar">				    
+					<td width="40" align="center"> <img src="images/iconoimprimir.png" border="0"> </td> 
+	 				<td width="360"> <a href="impcertificado2013.php?opcion=media&id='.$historiaid.'" target="_blank">Impresion Media Carta</a> </td>				
+				  </tr>
+				  <tr class="TablaDocsPar">				
+					<td width="40" align="center"> <img src="images/iconoimprimir.png" border="0"> </td> 			  
+				    <td width="360"> <a href="impcertificado2013.php?opcion=carta&id='.$historiaid.'" target="_blank">Impresion Hoja Carta Completa</a> </td>
+				  </tr>';
+	 }
+
+	 $cont.='</table><br>';
+	 echo $cont; exit();
+  }
+
+
   /////////////////////////////////////////////////////////////////////////  
   if($opcion == "anteriores")
   {
@@ -475,7 +526,7 @@
     if($_SESSION['ROL'] == "MED")
     {	
        $teridprofesional = $clase->BDLockup($_SESSION['USERNAME'],"usuarios","username","teridprof");
-       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , teridprof = ".$teridprofesional." , momento2 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
+       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , teridprof = ".$teridprofesional." , momento2 = CURRENT_TIMESTAMP, momento3 = NULL WHERE historiaid=".$id; 
        $clase->EjecutarSQL($vsql2);
     }
 
@@ -1729,7 +1780,6 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 				 <td width="80"> Vista por </td>				 
 				 <td width="80"> Cerrada por </td>				 
 				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
-				 <td width="20"><img src="images/iconoimprimir.png" border="0"></td>
 				 <td width="20"><img src="images/funciones.png" border="0"></td>
 				 <td width="20"><img src="images/seleccion.png" border="0"></td>		 				 
 			   </tr>';	
@@ -1764,8 +1814,7 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 				  <td width="50"> <font color="blue"> '.$row['tipoexamen'].' </td>				  
 				  <td width="60"> '.$medvisto.'</td>
 				  <td width="60"> '.$medcierra.' </td>				  
-				  <td width="20"> <a href="impcertificado2013.php?id='.$row['historiaid'].'" rel="facebox"> <img src="images/iconoimprimir.png" border="0"> </td>				  
-				  <td width="20"> <a href="#" OnClick="window.open(\'imphistoria.php?id='.$row['historiaid'].'\',\'ImpHC\',\'width=800,height=600\');"> <img src="images/iconoimprimir.png" border="0"> </td>				  
+				  <td width="20"> <a href="historiacli.php?opcion=menuhc&id='.$row['historiaid'].'" rel="facebox"> <img src="images/iconoimprimir.png" border="0"> </td>				  
 				  <td width="20"> <a href="?opcion=cambiar&amp;id='.$row['historiaid'].'" title="Modificar Historia" rel="facebox"> <img src="images/funciones.png" border="0"> </td>';
 		  if(($row['estado'] != 'C')||($_SESSION['USERNAME'] == 'ADMINISTRADOR')||($_SESSION['USERNAME'] == 'SAID')) 	  
 				  $cont.='<td width="25"> <a href="?opcion=detalles&amp;id='.$row['historiaid'].'" title="Diligenciar Historia"> <img src="images/seleccion.png" border="0"> </td>';

@@ -152,7 +152,7 @@ function Header($vermenu,$tipomenu)
    <td width="500"> </td>
    <td class="MenuEncabezado">
       <b>'.$_SESSION['NOMBREUSUARIO'].'</b> ( '.$_SESSION['EMPRESAACTUAL'] .' )<br>
-      <a href="users.php?opcion=detalles&id='.$_SESSION['USUARIO'].'"> Menu del Usuario </a> | 
+      <a href="usuarios.php?opcion=cambiarmiclave"> Cambiar Mi Clave </a> | 
 	  <a href="usuarios.php?opcion=salir"> Salir del Sistema </a> | 
    </td>      
  </tr>
@@ -404,7 +404,7 @@ function HeaderBlanco($titulo)
    <td width="500"> </td>
    <td class="MenuEncabezado">
       <b>'.$_SESSION['NOMBREUSUARIO'].'</b> ( '.$_SESSION['EMPRESAACTUAL'] .' )<br>
-      <a href="users.php?opcion=detalles&id='.$_SESSION['USUARIO'].'"> Menu del Usuario </a> | 
+      <a href="usuarios.php?opcion=cambiarmiclave"> Cambiar Mi Clave </a> | 
 	  <a href="usuarios.php?opcion=salir"> Salir del Sistema </a> | 
    </td>      
  </tr>
