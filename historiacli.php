@@ -526,7 +526,7 @@
     if($_SESSION['ROL'] == "MED")
     {	
        $teridprofesional = $clase->BDLockup($_SESSION['USERNAME'],"usuarios","username","teridprof");
-       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , teridprof = ".$teridprofesional." , momento2 = CURRENT_TIMESTAMP, momento3 = NULL WHERE historiaid=".$id; 
+       $vsql2 = "UPDATE historiacli SET usuariomed = '".$_SESSION['USERNAME']."' , teridprof = ".$teridprofesional." , momento2 = '".date("Y-m-d H:i:s")."' WHERE historiaid=".$id; 
        $clase->EjecutarSQL($vsql2);
     }
 
@@ -1672,7 +1672,7 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 	    // Si es un medico - la Marca como vista por él
         if($_SESSION['ROL'] == "MED")
         {	
-           $vsql2 = "UPDATE historiacli SET usuariocierra = '".$_SESSION['USERNAME']."' , momento3 = CURRENT_TIMESTAMP WHERE historiaid=".$id; 
+           $vsql2 = "UPDATE historiacli SET usuariocierra = '".$_SESSION['USERNAME']."' , momento3 = '".date("Y-m-d H:i:s")."' WHERE historiaid=".$id; 
            $clase->EjecutarSQL($vsql2);
         }
 
@@ -1821,6 +1821,7 @@ expuesto11,expuesto12,expuesto13,expuesto14,expuesto15,expuesto16,creador,moment
 				  
 		 $cont.='</tr>';
 	}
+
 	$cont.='</table></div>
 	        <table width="100%">
 	           <tr class="PieTabla"> 
