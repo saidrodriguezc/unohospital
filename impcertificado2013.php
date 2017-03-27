@@ -52,7 +52,9 @@
   if($row = mysql_fetch_array($result)) 
   {
    	 require('lib/fpdf/fpdf.php');
-	 $pdf=new FPDF();
+	 require('lib/fpdf/ean13.php');
+	 
+	 $pdf = new PDF_EAN13();
 	 $pdf->AddPage();
      
      $x=25;
@@ -244,9 +246,14 @@
   if($row = mysql_fetch_array($result)) 
   {
    	 require('lib/fpdf/fpdf.php');
-	 $pdf=new FPDF();
+	 require('lib/fpdf/ean13.php');
+	 
+	 $pdf = new PDF_EAN13();
 	 $pdf->AddPage();
      $x=25;
+
+	 //// Datos de Verificacion del Certificado
+     $pdf->SetFillColor(220,220,220);      	           $pdf->Rect(5,252,199,30,'F');	                       
 
 	 /// Primero Coloco las Firmas del Medico y paciente para que queden detras del Contenido
   	 $firmamedico = $clase->BDLockup($row['teridprof'],'terceros','terid','rutafirma');
@@ -278,7 +285,7 @@
 
 	 $pdf->Rect(4,50,50,13);	 	 
 	 $pdf->Rect(55,50,150,13);	 	 	 
-	 $pdf->Rect(4,140,201,100);	 	 
+	 $pdf->Rect(4,140,201,70);	 	 
 
 	 $pdf->SetFont('Arial','B',10);
 	 
@@ -291,7 +298,7 @@
 
      $cont= 'RECOMENDACIONES';
      $pdf->Text(5,144,$cont);
-
+     
      $pdf->SetFont('Arial','',9);    
      $cont = $row['observa5'];
 	 $pdf->SetXY(5,146);                                           $pdf->MultiCell(180,4,$cont,0,'L');
@@ -302,19 +309,33 @@
 	  
 	 /// Firmas
 	 $pdf->SetFont('Arial','',8);
-	 $cont= 'FIRMA MEDICO';                $pdf->Text(8,279,$cont);
-	 $pdf->Text(8,282,$nombreprof);
-	 $pdf->Text(8,285,'L.S.O. No. '.$registroprof);	   
+	 $cont= 'FIRMA MEDICO';                $pdf->Text(8,239,$cont);
+	 $pdf->Text(8,232,$nombreprof);
+	 $pdf->Text(8,235,'L.S.O. No. '.$registroprof);	   
 	 		 
-	 $pdf->line(8,275,70,275);
+	 $pdf->line(8,228,70,228);
 
 	 $cont= 'FIRMA TRABAJADOR';
-	 $pdf->Text(120,279,$cont);		 
-	 $pdf->line(105,275,170,275);
+	 $pdf->Text(120,232,$cont);		 
+	 $pdf->line(105,228,170,228);
 	 
 	 $cont= 'El Presente certificado no tiene validez sin la firma del Médico especialista y sello de la empresa';
-	 $pdf->Text(76,285,$cont);	
+	 $pdf->Text(76,243,$cont);	
 	 
+	
+     //// Codigo de Barras para la Autenticacion
+     $pdf->SetFillColor(0,0,0);
+     $pdf->SetFont('Arial','B',9);
+     $pdf->Text(9,259,'Autenticidad de Nuestro Certificado');
+     $pdf->SetFont('Arial','',8);
+     $pdf->Text(9,263,'Para efectos de Autenticidad del Certificado Médico, ud podra ingresar a nuestro sitio Web ');	
+     $pdf->Text(9,267,'en la opcion "Validar mi Certificado" y escaneando este codigo de Barras junto con el documento del titular ');	
+     $pdf->Text(9,271,'podrá verificar la originalidad de éste certificado.');	
+     $pdf->SetFont('Arial','B',9);
+     $pdf->Text(9,275,'www.saludempresarial.com/validar');	
+     $pdf->EAN13(157,258,$row['historiaid'].$row['historiaid']);	 
+
+
 	 /// Coloco los Datos en la casilla correspondiente
 	 /// Datos Fijos
 	 $pdf->SetFont('Arial','B',9);   	 $pdf->Text(24,35,'SAN JOSE DE CUCUTA');	
