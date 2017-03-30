@@ -21,6 +21,7 @@
 	 
 	 /// Imprimo los Formatos del Papel
 	 $pdf->Image('images/logoempresa2.jpg',8,6,75,17,0);
+	 $pdf->Image('images/marcaaguahc.jpg',40,80,120,120,0);
 	      
 	 $pdf->SetFont('Arial','B',20);
 	 $cont= 'HISTORIA CLINICA';                          $pdf->Text(113,16,$cont);	
@@ -175,25 +176,29 @@
      {
 		// Antecedentes Familiares 
 		// Columna Izquierda
-   	    if($row['antefam01'] != "")   		  $texto.= "ENFERMEDADES CONGENITAS :  \n".$row['antefam01']."\n\n"; 
-   	    if($row['antefam02'] != "")      	  $texto.= "ALERGIAS :  \n".$row['antefam02']."\n\n"; 
-   	    if($row['antefam03'] != "")      	  $texto.= "ENFERMEDADES PULMONARES :  \n".$row['antefam03']."\n\n"; 
-   	    if($row['antefam04'] != "")      	  $texto.= "ASMA :  \n".$row['antefam04']."\n\n"; 
-   	    if($row['antefam05'] != "")      	  $texto.= "TUBERCULOSIS :  \n".$row['antefam05']."\n\n"; 
-   	    if($row['antefam06'] != "")      	  $texto.= "HIPERTENSION :  \n".$row['antefam06']."\n\n"; 
-   	    if($row['antefam07'] != "")      	  $texto.= "CARDIOPATIAS :  \n".$row['antefam07']."\n\n"; 
-   	    if($row['antefam08'] != "")      	  $texto.= "E.C.V :  \n".$row['antefam08']."\n\n"; 
-   	    if($row['antefam09'] != "")      	  $texto.= "DIABETES :  \n".$row['antefam09']."\n\n"; 
-   	    if($row['antefam010'] != "")      	  $texto.= "CANCER :  \n".$row['antefam10']."\n\n"; 
-   	    if($row['antefam011'] != "")      	  $texto.= "OSTEOMUSCULARES :  \n".$row['antefam11']."\n\n"; 
-   	    if($row['antefam012'] != "")      	  $texto.= "ARTRITIS :  \n".$row['antefam12']."\n\n"; 
-   	    if($row['antefam013'] != "")      	  $texto.= "VARICES :  \n".$row['antefam13']."\n\n"; 
-   	    if($row['antefam014'] != "")      	  $texto.= "SINDROME CONVULSIVO :  \n".$row['antefam14']."\n\n"; 
-   	    if($row['antefam015'] != "")      	  $texto.= "PSIQUIATRICOS :  \n".$row['antefam15']."\n\n"; 
-   	    if($row['antefam016'] != "")      	  $texto.= "OTROS :  \n".$row['antefam16']."\n\n"; 
+   	    $texto.= "ENFERMEDADES CONGENITAS :  ".valor($row['antefam01'])."\n"; 
+   	    $texto.= "ALERGIAS :  ".valor($row['antefam02'])."\n"; 
+   	    $texto.= "ENFERMEDADES PULMONARES :  ".valor($row['antefam03'])."\n"; 
+   	    $texto.= "ASMA :  ".valor($row['antefam04'])."\n"; 
+   	    $texto.= "TUBERCULOSIS :  ".valor($row['antefam05'])."\n"; 
+   	    $texto.= "HIPERTENSION :  ".valor($row['antefam06'])."\n"; 
+   	    $texto.= "CARDIOPATIAS :  ".valor($row['antefam07'])."\n"; 
+   	    $texto.= "E.C.V :  ".valor($row['antefam08'])."\n"; 
+   	    $texto.= "DIABETES :  ".valor($row['antefam09'])."\n"; 
+   	    $texto.= "CANCER :  ".valor($row['antefam10'])."\n"; 
+   	    $texto.= "OSTEOMUSCULARES :  ".valor($row['antefam11'])."\n"; 
+   	    $texto.= "ARTRITIS :  ".valor($row['antefam12'])."\n"; 
+   	    $texto.= "VARICES :  ".valor($row['antefam13'])."\n"; 
+   	    $texto.= "SINDROME CONVULSIVO :  ".valor($row['antefam14'])."\n"; 
+   	    $texto.= "PSIQUIATRICOS :  ".valor($row['antefam15'])."\n"; 
+   	    $texto.= "OTROS :  ".valor($row['antefam16'])."\n"; 
 	
-	    $pdf->SetFont('Arial','',8);            $texto = $row['observa1'];
-	    $pdf->SetXY(5,183);              	    $pdf->MultiCell(190,3,$texto); 
+	    $pdf->SetXY(5,125);              	    $pdf->MultiCell(190,3,$texto); 
+	    
+	    $cont = 'OTRAS : ______________________________________________________________________________________________________________';       
+		$pdf->Text(6,195,$cont);    
+	    $pdf->SetFont('Arial','',8);              $texto = valor($row['observa1']);             $pdf->Text(20,194,$texto);    
+	    
 
         // Antecedentes Personales 
 		// Columna Izquierda
@@ -291,7 +296,7 @@
 
 		$cont = 'OTRAS : ______________________________________________________________________________________________________________';       
 		$pdf->Text(6,261,$cont);    
- 	    $cont = $row['inmuni04'];                            $pdf->Text(26,259,$cont);
+ 	    $cont = valor($row['inmuni04']);                            $pdf->Text(26,259,$cont);
 	
 
 	 }
@@ -304,6 +309,7 @@
 	 // Inicio Hoja No. 2
 
 	 $pdf->AddPage();
+     $pdf->Image('images/marcaaguahc.jpg',40,80,120,120,0);
      
      $x=25;
 	 
@@ -380,12 +386,12 @@
 		   $cont= 'PLANIFICA : ___ METODO : ______________________________';           $pdf->Text(115,59,$cont);		 	 	   	   	   
 	       
 		   // Completanto los Campos
-		   $pdf->Text(23,39,$row['gineco01']);	                           $pdf->Text(120,39,$row['gineco02']);	
-		   $pdf->Text(29,44,$row['gineco03']);	                           $pdf->Text(120,44,$row['gineco04']);	
-		   $pdf->Text(23,49,$row['gineco05']);	                           $pdf->Text(124,49,$row['gineco06']);	
-		   $pdf->Text(30,54,$row['gineco08']);	                           $pdf->Text(136,54,$row['gineco10']);	
-		   $pdf->Text(27,59,$row['gineco11']);	                           $pdf->Text(72,59,$row['gineco12']);
-	       $pdf->Text(152,59,$row['gineco14']);	   
+		   $pdf->Text(23,39,valor($row['gineco01']));	                           $pdf->Text(120,39,valor($row['gineco02']));	
+		   $pdf->Text(29,44,valor($row['gineco03']));	                           $pdf->Text(120,44,valor($row['gineco04']));	
+		   $pdf->Text(23,49,valor($row['gineco05']));	                           $pdf->Text(124,49,valor($row['gineco06']));	
+		   $pdf->Text(30,54,valor($row['gineco08']));	                           $pdf->Text(136,54,valor($row['gineco10']));	
+		   $pdf->Text(27,59,valor($row['gineco11']));	                           $pdf->Text(72,59,valor($row['gineco12']));
+	       $pdf->Text(152,59,valor($row['gineco14']));	   
 
 	       $pdf->SetFont('Arial','B',9);                                   
 		   $pdf->Text(25,54,ValorSINO($row['gineco07']));	   	           $pdf->Text(129,54,ValorSINO($row['gineco09']));	   	   
@@ -419,54 +425,60 @@
 	   $cont= 'NEUROLOGICO: ';                   $pdf->Text(107,$y+10,$cont);		 	 $pdf->Text(140,$y+10,ValorSINO($row['revsis11']));		 	   
 	   $cont= 'OTROS : ';                        $pdf->Text(155,$y+10,$cont);		 	 $pdf->Text(197,$y+10,ValorSINO($row['revsis12'])); 
 	   $cont= 'OBSERVACIONES : ___________________________________________________________________________________________________________';                           
-	   $pdf->Text(6,90,$cont);		 	 	     $pdf->Text(33,$y+49,$row['observa4']);		 	   
+	   $pdf->Text(6,90,$cont);		 	 	 //    $pdf->Text(33,$y+49,$row['observa4']);		 	   
 	         
        //// DATOS EXAMEN FISICO
-	   $cont= 'PESO : ____ kg';                $pdf->Text(6,105,$cont);		 	         $pdf->Text(17,105,$row['efpeso']);		 	 
-	   $cont= 'TALLA : _____ mts';             $pdf->Text(34,105,$cont);		 	     $pdf->Text(45,105,$row['eftalla']);		 	 
-	   $cont= 'I.M.C. : ________';             $pdf->Text(70,105,$cont);		 	 	 $pdf->Text(81,105,$row['efimc']);		 	   
-	   $cont= 'TENSION ART. : _______';        $pdf->Text(102,105,$cont);		 	 	 $pdf->Text(125,105,$row['eftart']); 
-	   $cont= 'FRE CARD : ________';           $pdf->Text(140,105,$cont);		 	 	 $pdf->Text(158,105,$row['effresp']); 
-	   $cont= 'FRE RESP : _____';              $pdf->Text(175,105,$cont);		 	 	 $pdf->Text(193,105,$row['effcard']); 	   	  
+	   $cont= 'PESO : ____ kg';                $pdf->Text(6,105,$cont);		 	         $pdf->Text(17,105,valor($row['efpeso']));		 	 
+	   $cont= 'TALLA : _____ mts';             $pdf->Text(34,105,$cont);		 	     $pdf->Text(45,105,valor($row['eftalla']));		 	 
+	   $cont= 'I.M.C. : ________';             $pdf->Text(70,105,$cont);		 	 	 $pdf->Text(81,105,valor($row['efimc']));		 	   
+	   $cont= 'TENSION ART. : _______';        $pdf->Text(102,105,$cont);		 	 	 $pdf->Text(125,105,valor($row['eftart'])); 
+	   $cont= 'FRE CARD : ________';           $pdf->Text(140,105,$cont);		 	 	 $pdf->Text(158,105,valor($row['effresp'])); 
+	   $cont= 'FRE RESP : _____';              $pdf->Text(175,105,$cont);		 	 	 $pdf->Text(193,105,valor($row['effcard'])); 	   	  
 
-	   $cont= 'LATERALIDAD : _______________';        $pdf->Text(6,110,$cont);	      $pdf->Text(28,110,$row['lateralidad']);		 	 
-	   $cont= 'FUMA : _____________';                 $pdf->Text(55,110,$cont);       $pdf->Text(65,110,$row['fuma']);		 	 
-	   $cont= 'BEBE LICOR : _________________';       $pdf->Text(93,110,$cont); 	  $pdf->Text(113,110,$row['bebe']);		 	 
-       $cont= 'HACE DEPORTE : ___________________';   $pdf->Text(145,110,$cont);	  $pdf->Text(170,110,$row['deporte']); 
+	   $cont= 'LATERALIDAD : _______________';        $pdf->Text(6,110,$cont);	      $pdf->Text(28,110,valor($row['lateralidad']));		 	 
+	   $cont= 'FUMA : _____________';                 $pdf->Text(55,110,$cont);       $pdf->Text(65,110,valor($row['fuma']));		 	 
+	   $cont= 'BEBE LICOR : _________________';       $pdf->Text(93,110,$cont); 	  $pdf->Text(113,110,valor($row['bebe']));		 	 
+       $cont= 'HACE DEPORTE : ___________________';   $pdf->Text(145,110,$cont);	  $pdf->Text(170,110,valor($row['deporte'])); 
 	   
-   	    if($row['ef1'] != "")   		      $texto.= "ESTADO NUTRICIONAL :  \n".$row['ef1']."\n\n"; 
-   	    if($row['ef2'] != "")   		      $texto.= "PIEL Y FANERAS :  \n".$row['ef2']."\n\n"; 		
-   	    if($row['ef3'] != "")   		      $texto.= "CRANEO :  \n".$row['ef3']."\n\n"; 				
-   	    if($row['ef4'] != "")   		      $texto.= "CARA :  \n".$row['ef4']."\n\n"; 		
-   	    if($row['ef5'] != "")   		      $texto.= "PARPADOS :  \n".$row['ef5']."\n\n"; 				
-   	    if($row['ef6'] != "")   		      $texto.= "PUPILAS :  \n".$row['ef6']."\n\n"; 				
-   	    if($row['ef7'] != "")   		      $texto.= "CORNEAS :  \n".$row['ef7']."\n\n"; 				
-   	    if($row['ef8'] != "")   		      $texto.= "CONJUNTIVAS :  \n".$row['ef8']."\n\n"; 						
-   	    if($row['ef9'] != "")   		      $texto.= "NARIZ :  \n".$row['ef9']."\n\n"; 				
-   	    if($row['ef10'] != "")   		      $texto.= "BOCA :  \n".$row['ef10']."\n\n"; 				
-   	    if($row['ef11'] != "")   		      $texto.= "FARINGE :  \n".$row['ef11']."\n\n"; 						
-   	    if($row['ef12'] != "")   		      $texto.= "INSPECCION EXTERNA OIDOS :  \n".$row['ef12']."\n\n"; 				
-   	    if($row['ef13'] != "")   		      $texto.= "OTOSCOPIA :  \n".$row['ef13']."\n\n"; 								
-   	    if($row['ef14'] != "")   		      $texto.= "INSPECCION CUELLO :  \n".$row['ef14']."\n\n"; 				
-   	    if($row['ef15'] != "")   		      $texto.= "PALPACION CUELLO Y TIROIDES :  \n".$row['ef15']."\n\n"; 				
-   	    if($row['ef16'] != "")   		      $texto.= "INSPECCION TORAX :  \n".$row['ef16']."\n\n"; 						
-   	    if($row['ef17'] != "")   		      $texto.= "PALPACION TORAX :  \n".$row['ef17']."\n\n"; 						
-   	    if($row['ef18'] != "")   		      $texto.= "AUSCULTACION TORAX :  \n".$row['ef18']."\n\n"; 								
-   	    if($row['ef19'] != "")   		      $texto.= "INSPECCION ABDOMINAL :  \n".$row['ef19']."\n\n"; 						
-   	    if($row['ef20'] != "")   		      $texto.= "PALPACION ABDOMINAL :  \n".$row['ef20']."\n\n"; 										
-   	    if($row['ef21'] != "")   		      $texto.= "INSPECCION COLUMNA VERTEBRAL :  \n".$row['ef21']."\n\n"; 						
-   	    if($row['ef22'] != "")   		      $texto.= "PALPACION COLUMNA VERTEBRAL:  \n".$row['ef22']."\n\n"; 								
-   	    if($row['ef23'] != "")   		      $texto.= "INSPECCION MIEMBROS SUPERIORES :  \n".$row['ef23']."\n\n"; 						
-   	    if($row['ef24'] != "")   		      $texto.= "PULSO RADIAL :  \n".$row['ef24']."\n\n"; 								
-   	    if($row['ef25'] != "")   		      $texto.= "INSPECCION MIEMBROS INFERIORES :  \n".$row['ef25']."\n\n"; 						
-   	    if($row['ef26'] != "")   		      $texto.= "REFLEJOS TENDINOSOS :  \n".$row['ef26']."\n\n"; 										
-   	    if($row['ef27'] != "")   		      $texto.= "ESFERA MENTAL :  \n".$row['ef27']."\n\n"; 						
-   	    if($row['ef28'] != "")   		      $texto.= "NEUROLOGICO :  \n".$row['ef28']."\n\n"; 								
-   	    if($row['ef29'] != "")   		      $texto.= "OTROS :  \n".$row['ef29']."\n\n"; 									
-														
-	    $pdf->SetFont('Arial','',7.5);
-	    $pdf->SetXY(5,114);              	  $pdf->MultiCell(190,3,$texto); 
+	   $texto = "";      $texto2=""; 
 
+   	   $texto.= "EDO NUTRICIONAL :  ".valor($row['ef1'])."\n"; 
+   	   $texto.= "PIEL Y FANERAS :  ".valor($row['ef2'])."\n"; 		
+   	   $texto.= "CRANEO :  ".valor($row['ef3'])."\n"; 				
+   	   $texto.= "CARA :  ".valor($row['ef4'])."\n"; 		
+   	   $texto.= "PARPADOS :  ".valor($row['ef5'])."\n"; 				
+   	   $texto.= "PUPILAS :  ".valor($row['ef6'])."\n"; 				
+   	   $texto.= "CORNEAS :  ".valor($row['ef7'])."\n"; 				
+   	   $texto.= "CONJUNTIVAS :  ".valor($row['ef8'])."\n"; 						
+   	   $texto.= "NARIZ :  ".valor($row['ef9'])."\n"; 				
+   	   $texto.= "BOCA :  ".valor($row['ef10'])."\n"; 				
+   	   $texto.= "FARINGE :  ".valor($row['ef11'])."\n"; 						
+   	   $texto.= "INSPECC. EXT. OIDOS :  ".valor($row['ef12'])."\n"; 				
+   	   $texto.= "OTOSCOPIA :  ".valor($row['ef13'])."\n"; 								
+   	   $texto.= "INSPECCION CUELLO :  ".valor($row['ef14'])."\n"; 				
+   	   $texto2.= "PALPAC. CUELLO Y TIROIDES :  ".valor($row['ef15'])."\n"; 				
+   	   $texto2.= "INSPECCION TORAX :  ".valor($row['ef16'])."\n"; 						
+   	   $texto2.= "PALPAC. TORAX :  ".valor($row['ef17'])."\n"; 						
+   	   $texto2.= "AUSCULTACION TORAX :  ".valor($row['ef18'])."\n"; 								
+   	   $texto2.= "INSPECC. ABDOMINAL :  ".valor($row['ef19'])."\n"; 						
+   	   $texto2.= "PALPACION ABDOMINAL :  ".valor($row['ef20'])."\n"; 										
+   	   $texto2.= "INSPECCION COLUMNA VERT :  ".valor($row['ef21'])."\n"; 						
+   	   $texto2.= "PALPAC. COLUMNA VERT.:  ".valor($row['ef22'])."\n"; 								
+   	   $texto2.= "INSPECC. MIEMBROS SUP. :  ".valor($row['ef22'])."\n"; 						
+   	   $texto2.= "PULSO RADIAL :  ".valor($row['ef24'])."\n"; 								
+   	   $texto2.= "INSPECC. MIEMBROS INF. :  ".valor($row['ef25'])."\n"; 						
+   	   $texto2.= "REFLEJOS TENDINOSOS :  ".valor($row['ef26'])."\n"; 										
+   	   $texto2.= "ESFERA MENTAL :  ".valor($row['ef27'])."\n"; 						
+   	   $texto2.= "NEUROLOGICO :  ".valor($row['ef28'])."\n"; 								
+   	   $texto2.= "OTROS :  ".valor($row['ef29'])."\n"; 									
+														
+	   $pdf->SetFont('Arial','',7.5);
+	   $pdf->SetXY(5,118);              	  $pdf->MultiCell(100,3,$texto); 
+	   $pdf->SetXY(110,118);              	  $pdf->MultiCell(100,3,$texto2); 
+
+       $cont= 'OBSERVACIONES : ___________________________________________________________________________________________________________';                           
+	   $pdf->Text(6,175,$cont);		 	      $pdf->Text(33,174,$row['observa4']);		 	   
+	   
        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
        /// RESULTADOS EXAMENES PARACLINICOS		
 	   /*	
@@ -492,7 +504,7 @@
 	   }
 	   	
 	   	*/
-	   $pdf->SetFont('Arial','B',7.5);                 $texto = $row['observa6'];
+	   $pdf->SetFont('Arial','B',7.5);                 $texto = "OBSERVACIONES : ".$row['observa6'];
 	   $pdf->SetXY(6,187);                        	   $pdf->MultiCell(190,3,$texto); 
 
        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -514,7 +526,6 @@
 	   $nombreprof = $clase->BDLockup($teridprof,'terceros','terid','nombre');
   	   $registroprof = $clase->BDLockup($teridprof,'terceros','terid','registropro');
 	  
- 
 	   /// Firmas
 	   $pdf->line(15,260,80,260);     
 	   $cont= 'FIRMA MEDICO';
@@ -544,6 +555,15 @@
   mysql_free_result($result); 
   mysql_close($conex);			  
 
+
+  /////////////////////////////////////////////////////////////////////////
+  function Valor($campo)
+  {
+    if(strlen($campo) == 0)
+	  return("NIEGA");
+	else  
+	  return($campo);
+  }
 
   /////////////////////////////////////////////////////////////////////////
   function ValorSINO($campo)

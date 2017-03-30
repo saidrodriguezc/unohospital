@@ -25,51 +25,54 @@
 
   if($row = mysql_fetch_array($result)) 
   {
+   	 
+   	 $docuid = $row['docuid']; 
+     
+     /// Busco los procedimientos de la PSE    
+   	 $procedimientos = "";
+   	 $vsql2 = "SELECT IX.descripcion FROM item IX INNER JOIN dedocumentos DX ON (DX.itemid = IX.itemid) WHERE IX.descripcion NOT LIKE '%RX%' AND DX.docuid=".$docuid;
+     $result2 = mysql_query($vsql2,$conex);
+     while($row2 = mysql_fetch_array($result2)) 
+        $procedimientos .= $row2['descripcion']."     "; 
+
+     //// Genero el PDF
    	 require('lib/fpdf/fpdf.php');
 	 $pdf=new FPDF();
 	 $pdf->AddPage();
      $x=25;
 
-	 
+	  
  	 if($row['rutafirma'] != "")
 	 {
 	    if(file_exists('firmas/'.$row['rutafirma']))
-	       $pdf->Image('firmas/'.$row['rutafirma'],110,255,65,29,0);
+	       $pdf->Image('firmas/'.$row['rutafirma'],10,245,65,29,0);
      }
  
 	 /// Imprimo los Formatos del Papel
-	 $pdf->Image('images/logoempresa.jpg',8,10,80,19,0);
+	 $pdf->Image('images/logoempresa.jpg',8,18,80,19,0);
 	 $pdf->SetFont('Arial','B',15);
-	 $cont= 'DECLARACION CONSENTIMIENTO INFORMADO ';                  $pdf->Text(40,50,$cont);	
+	 $cont= 'DECLARACION CONSENTIMIENTO INFORMADO ';                  $pdf->Text(40,65,$cont);	
 	 
      /// Ciudad y Fecha
 	 $cont= 'San Jose de Cucuta, '.date("d").' de '.NombreMes(date("m")).' de '.date("Y");
 	 $pdf->SetFont('Arial','',12);                                  
-	 $pdf->SetXY(8,69);                  $pdf->MultiCell(0,0,$cont,0,'L');	
+	 $pdf->SetXY(8,90);                  $pdf->MultiCell(0,0,$cont,0,'L');	
 
      /// Primer parrafo del Consentimiento
 	 $cont  = 'Yo, '.strtoupper($row['nombre']).'   identificado con Cédula de Ciudadanía  '.$row['nit'].'  manifiesto ';
      $cont .= 'que recibí una explicacion clara sobre los procedimientos clinicos y paraclinicos que me serán aplicados ';
      $cont .= 'por parte de SALUD EMPRESARIAL IPS SAS con el fin de emitir un concepto sobre la evaluacion clinica ';
-     $cont .= 'a la que seré sometido. ';
+     $cont .= 'a la que seré sometido. Los procedimientos a practicar serán : ';
+     $cont .= $procedimientos;
 
 	 $pdf->SetFont('Arial','',12);                                  
-	 $pdf->SetXY(8,84);                  $pdf->MultiCell(0,10,$cont,0,'J');	
-
-     /// Segundo parrafo del Consentimiento
-	 $cont  = 'Texto complementario Texto complementario Texto complementario Texto complementario Texto complementario ';
-	 $cont .= 'Texto complementario Texto complementario Texto complementario Texto complementario Texto complementario ';
-	 $cont .= 'Texto complementario Texto complementario Texto complementario Texto complementario Texto complementario ';
-
-	 $pdf->SetFont('Arial','',12);                                  
-	 $pdf->SetXY(8,140);                  $pdf->MultiCell(0,10,$cont,0,'J');	
-
+	 $pdf->SetXY(8,120);                  $pdf->MultiCell(0,10,$cont,0,'J');	
 
      /// Sin otro particular
 	 $cont  = 'Sin otro particular';
 
 	 $pdf->SetFont('Arial','',12);                                  
-	 $pdf->SetXY(8,210);                  $pdf->MultiCell(0,10,$cont,0,'J');	
+	 $pdf->SetXY(8,198);                  $pdf->MultiCell(0,10,$cont,0,'J');	
 
    	 $cont= 'FIRMA TRABAJADOR';
 	 $pdf->Text(13,270,$cont);		 
