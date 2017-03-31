@@ -260,12 +260,13 @@
 	 if($firmamedico != "")
 	 {
 	    if(file_exists('firmas/'.$firmamedico))
-	      $pdf->Image('firmas/'.$firmamedico,12,260,40,15,0);
+	      $pdf->Image('firmas/'.$firmamedico,12,216,40,15,0);
      }
+
  	 if($row['rutafirma'] != "")
 	 {
 	    if(file_exists('firmas/'.$row['rutafirma']))
-	       $pdf->Image('firmas/'.$row['rutafirma'],110,255,65,29,0);
+	       $pdf->Image('firmas/'.$row['rutafirma'],110,216,65,29,0);
      }
  
 	 /// Imprimo los Formatos del Papel

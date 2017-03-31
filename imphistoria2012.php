@@ -193,7 +193,7 @@
    	    $texto.= "PSIQUIATRICOS :  ".valor($row['antefam15'])."\n"; 
    	    $texto.= "OTROS :  ".valor($row['antefam16'])."\n"; 
 	
-	    $pdf->SetXY(5,125);              	    $pdf->MultiCell(190,3,$texto); 
+	    $pdf->SetFont('Arial','',8);            $pdf->SetXY(5,125);              	    $pdf->MultiCell(190,3,$texto); 
 	    
 	    $cont = 'OTRAS : ______________________________________________________________________________________________________________';       
 		$pdf->Text(6,195,$cont);    
